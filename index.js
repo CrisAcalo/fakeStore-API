@@ -1,0 +1,37 @@
+const express = require('express');
+const cors = require('cors');
+const routerApi = require('./routes');
+const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/error.handler')
+
+const app = express();
+const port = 3000;
+
+app.use(express.json());
+/*Para que cualquier cliente/dominio
+pueda hacer peticiones a nuestra API*/
+// const whitelist = ['http//localhost:8080'];//para permitir el acceso a dominios especificos
+// const corsOptions = {
+//   origin: (origin, callback) => {
+//     if(whitelist.includes(origin) || !origin){
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   }
+// }
+app.use(cors());
+
+app.get('/', (req, res) => {
+  res.send('Express Server');
+})
+
+routerApi(app);
+
+app.use(logErrors);
+app.use(boomErrorHandler);
+app.use(errorHandler);
+
+app.listen(port, () => {
+  console.log(`Server is running on port http://localhost:${port}`);
+});
+
