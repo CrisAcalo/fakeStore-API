@@ -1,14 +1,8 @@
 //file middlewares/error.handler.js
+const { Sequelize } = require('sequelize');
 function logErrors(err, req, res, next) {
-  console.error(err);
+  // console.error(err);
   next(err);
-}
-
-function errorHandler(err, req, res, next) {
-  res.status(500).json({
-    message: err.message,
-    stack: err.stack
-  });
 }
 
 function boomErrorHandler(err, req, res, next) {
@@ -20,5 +14,23 @@ function boomErrorHandler(err, req, res, next) {
   }
 }
 
+function sequelizeHandler(err, req, res, next) {
+  if (err instanceof Sequelize.ValidationError) {
+    return res.status(400).json({
+      message: err.errors.map((e) => e.message),
+    });
+  } else {
+    next(err);
+  }
+}
 
-module.exports = { logErrors, errorHandler, boomErrorHandler };
+function errorHandler(err, req, res, next) {
+  res.status(500).json({
+    message: err.message,
+    stack: err.stack
+  });
+}
+
+
+
+module.exports = { logErrors, sequelizeHandler, boomErrorHandler, errorHandler };

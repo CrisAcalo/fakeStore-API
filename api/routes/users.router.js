@@ -2,9 +2,9 @@ const express = require('express');
 
 const UsersService = require('../services/user.service');
 const {
-  // createCategorySchema,
-  updateCategorySchema,
-  getCategorySchema } = require('../schemas/category.schema');
+  createUserSchema,
+  updateUserSchema,
+  getUserSchema } = require('../schemas/user.schema');
 const validatorHandler = require('../middlewares/validator.handler');
 
 const router = express.Router();
@@ -16,12 +16,12 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id',
-
+  validatorHandler(getUserSchema, 'params'),
   async (req, res, next) => { //luego el middleware de response
     const { id } = req.params;
     try {
-      const category = await service.findOne(id);
-      res.status(200).json(category);
+      const user = await service.findOne(id);
+      res.status(200).json(user);
     } catch (error) {
       next(error);
     }
@@ -29,19 +29,25 @@ router.get('/:id',
 );
 
 router.post('/',
-
-  async (req, res) => {
+  validatorHandler(createUserSchema, 'body'),
+  async (req, res, next) => {
     const body = req.body;
-    const newCategory = await service.create(body);
+    try {
+      const newUser = await service.create(body);
 
-    res.status(201).json({
-      message: 'created',
-      data: newCategory,
-    });
+      res.status(201).json({
+        message: 'created',
+        data: newUser,
+      });
+    } catch (error) {
+      next(error);
+      // res.json(error);
+    }
   });
 
 router.patch('/:id',
-
+  validatorHandler(getUserSchema, 'params'),
+  validatorHandler(updateUserSchema, 'body'),
   async (req, res, next) => {
     const body = req.body;
     const { id } = req.params;
@@ -58,7 +64,7 @@ router.patch('/:id',
   });
 
 router.delete('/:id',
-
+  validatorHandler(getUserSchema, 'params'),
   async (req, res, next) => {
     try {
       const { id } = req.params;
