@@ -14,7 +14,6 @@ router.get('/', async (req, res) => {
   const categories = await service.find();
   res.json(categories);
 });
-
 router.get('/:id',
   validatorHandler(getUserSchema, 'params'),
   async (req, res, next) => { //luego el middleware de response
@@ -27,7 +26,6 @@ router.get('/:id',
     }
   }
 );
-
 router.post('/',
   validatorHandler(createUserSchema, 'body'),
   async (req, res, next) => {
@@ -44,7 +42,6 @@ router.post('/',
       // res.json(error);
     }
   });
-
 router.patch('/:id',
   validatorHandler(getUserSchema, 'params'),
   validatorHandler(updateUserSchema, 'body'),
@@ -62,7 +59,6 @@ router.patch('/:id',
       next(error);
     }
   });
-
 router.delete('/:id',
   validatorHandler(getUserSchema, 'params'),
   async (req, res, next) => {

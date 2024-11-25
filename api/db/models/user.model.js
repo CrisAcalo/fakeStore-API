@@ -1,4 +1,3 @@
-const { de } = require('@faker-js/faker');
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
 const USER_TABLE = 'users';

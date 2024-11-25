@@ -27,7 +27,6 @@ router.get('/:id',
     }
   }
 );
-
 router.get('/:id/products',
   validatorHandler(getCategorySchema, 'params'), //primero enviamos el middleware de validacion
   async (req, res, next) => { //luego el middleware de response
@@ -40,7 +39,6 @@ router.get('/:id/products',
     }
   }
 );
-
 // router.post('/',
 //   validatorHandler(createCategorySchema, 'body'),
 //   async (req, res) => {
@@ -52,7 +50,6 @@ router.get('/:id/products',
 //       data: newCategory,
 //     });
 //   });
-
 router.patch('/:id',
   validatorHandler(getCategorySchema, 'params'),
   validatorHandler(updateCategorySchema, 'body'),
@@ -70,7 +67,6 @@ router.patch('/:id',
       next(error);
     }
   });
-
 router.delete('/:id',
   validatorHandler(getCategorySchema, 'params'),
   async (req, res, next) => {
@@ -84,5 +80,4 @@ router.delete('/:id',
     }
 
   });
-
 module.exports = router;

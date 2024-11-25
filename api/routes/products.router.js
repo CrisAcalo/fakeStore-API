@@ -12,7 +12,6 @@ router.get('/', async (req, res) => {
   const products = await ProductsService.find();
   res.json(products);
 });
-
 router.get('/:id',
   validatorHandler(getProductSchema, 'params'), //primero enviamos el middleware de validacion
   async (req, res, next) => { //luego el middleware de response
@@ -25,7 +24,6 @@ router.get('/:id',
     }
   }
 );
-
 router.post('/',
   validatorHandler(createProductSchema, 'body'),
   async (req, res) => {
@@ -37,7 +35,6 @@ router.post('/',
       data: newProduct,
     });
   });
-
 router.patch('/:id',
   validatorHandler(getProductSchema, 'params'),
   validatorHandler(updateProductSchema, 'body'),
@@ -56,7 +53,6 @@ router.patch('/:id',
       next(error);
     }
   });
-
 router.delete('/:id',
   validatorHandler(getProductSchema, 'params'),
   async (req, res, next) => {
@@ -70,5 +66,4 @@ router.delete('/:id',
     }
 
   });
-
 module.exports = router;

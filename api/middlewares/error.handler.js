@@ -1,7 +1,7 @@
 //file middlewares/error.handler.js
 const { Sequelize } = require('sequelize');
 function logErrors(err, req, res, next) {
-  // console.error(err);
+  console.error(err);
   next(err);
 }
 
@@ -17,7 +17,9 @@ function boomErrorHandler(err, req, res, next) {
 function sequelizeHandler(err, req, res, next) {
   if (err instanceof Sequelize.ValidationError) {
     return res.status(400).json({
-      message: err.errors.map((e) => e.message),
+      statusCode: 409,
+      message: err.name,
+      errors: err.errors
     });
   } else {
     next(err);
