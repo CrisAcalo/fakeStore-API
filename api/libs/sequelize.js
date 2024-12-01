@@ -1,3 +1,4 @@
+// libs/sequelize.js
 const { Sequelize } = require('sequelize');
 
 const { config } = require('../config/config');
@@ -15,11 +16,11 @@ const URI = `postgres://${USER}:${PASSWORD}@${HOST}:${PORT}/${DB_NAME}`;
 const sequelize = new Sequelize(URI, {
   dialect: 'postgres',
   // dialect: 'mysql',
-  logging: false,
+  logging: false, // sirve para que no muestre los logs de las consultas
 });
 
 setupModels(sequelize);
 
-sequelize.sync();
+// sequelize.sync(); // sirve para que se sincronice con la base de datos
 
 module.exports = { sequelize };
