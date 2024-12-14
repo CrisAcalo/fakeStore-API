@@ -26,14 +26,19 @@ router.get('/:id',
 );
 router.post('/',
   validatorHandler(createProductSchema, 'body'),
-  async (req, res) => {
+  async (req, res, next) => {
     const body = req.body;
-    const newProduct = await ProductsService.create(body);
+    try {
+      const newProduct = await ProductsService.create(body);
 
-    res.status(201).json({
-      message: 'created',
-      data: newProduct,
-    });
+      res.status(201).json({
+        message: 'created',
+        data: newProduct,
+      });
+    } catch (error) {
+      next(error);
+    }
+
   });
 router.patch('/:id',
   validatorHandler(getProductSchema, 'params'),

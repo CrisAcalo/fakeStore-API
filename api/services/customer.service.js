@@ -22,7 +22,11 @@ class CustomerService {
   }
 
   async create(body) {
-    return this.Customer.create(body);
+    return this.Customer.create(body,
+      {
+        include: ['user']
+      }
+    );
   }
 
   async update(id, changes) {

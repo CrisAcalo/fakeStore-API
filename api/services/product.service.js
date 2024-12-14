@@ -6,73 +6,36 @@ const { sequelize } = require('../libs/sequelize');
 class ProductService {
 
   constructor() {
-    this.products = [];
-    this.generate();
-  }
-
-  async generate() {
-    const limit = 100;
-    for (let i = 0; i < limit; i++) {
-      this.products.push({
-        id: faker.string.uuid(),
-        categoryId: faker.number.int({ min: 1, max: 5 }).toString(),
-        name: faker.commerce.productName(),
-        price: parseInt(faker.commerce.price(), 10),
-        image: faker.image.url(),
-        isBlock: faker.datatype.boolean(),
-      });
-    }
+    this.Product = sequelize.models.Product;
   }
 
   async create(body) {
-    const newProduct = {
-      id: faker.string.uuid(),
-      ...body,
-      isBlock: faker.datatype.boolean(),
-    };
-    this.products.push(newProduct);
-    return newProduct;
+    return this.Product.create(body);
   }
 
   async find() {
-    const query = 'SELECT * FROM tasks';
-    const [data, metadata] = await sequelize.query(query);
-    return data;
+    return this.Product.findAll({
+      include: ['category']
+    });
   }
 
   async findOne(id) {
-    const product = this.products.find(item => item.id === id);
+    const product = await this.Product.findByPk(id);
     if (!product) {
       throw boom.notFound('Product not found');
     }
-    if (product.isBlock) {
-      throw boom.conflict('Product is block');
-    }
     return product;
-
   }
 
   async update(id, changes) {
-    const index = this.products.findIndex(item => item.id === id);
-    if (index === -1) {
-      throw boom.notFound('Product not found');
-    } else {
-      this.products[index] = {
-        ...this.products[index],
-        ...changes
-      };
-      return this.products[index];
-    }
+    const product = await this.findOne(id);
+    return product.update(changes);
   }
 
   async delete(id) {
-    const index = this.products.findIndex(item => item.id === id);
-    if (index === -1) {
-      throw boom.notFound('Product not found');
-    } else {
-      this.products.splice(index, 1);
-      return { id };
-    }
+    const product = await this.findOne(id);
+    await product.destroy();
+    return { id };
   }
 
 }
