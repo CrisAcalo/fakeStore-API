@@ -1,12 +1,10 @@
 const express = require('express');
-const { faker } = require('@faker-js/faker');
 
 const ProductsService = require('../services/product.service');
 const { createProductSchema, updateProductSchema, getProductSchema } = require('../schemas/product.schema');
 const validatorHandler = require('../middlewares/validator.handler');
 
 const router = express.Router();
-// const ProductsService.= new ProductsServide(); //ya no es necesario porque usamos un singleton
 
 router.get('/', async (req, res) => {
   const products = await ProductsService.find();

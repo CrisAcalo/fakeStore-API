@@ -15,11 +15,11 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
+    await queryInterface.changeColumn(CUSTOMER_TABLE, 'userId', {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      unique: true,
+      field: 'user_id',
+    });
   }
 };
