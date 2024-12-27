@@ -7,7 +7,6 @@ const DB_NAME = encodeURIComponent(config.dbName);
 const PORT = encodeURIComponent(config.dbPort);
 
 const URI = `postgres://${USER}:${PASSWORD}@${HOST}:${PORT}/${DB_NAME}`;
-// const URI = `mysql://${USER}:${PASSWORD}@${HOST}:${PORT}/${DB_NAME}`;
 
 module.exports = {
   development: {
@@ -17,5 +16,8 @@ module.exports = {
   production: {
     url: URI,
     dialect: 'postgres',
+    ssl: {
+      rejectUnauthorized: false
+    }
   }
 }
