@@ -1,15 +1,18 @@
 const express = require('express');
 
 const ProductsService = require('../services/product.service');
-const { createProductSchema, updateProductSchema, getProductSchema } = require('../schemas/product.schema');
+const { createProductSchema, updateProductSchema, getProductSchema, queryProductSchema } = require('../schemas/product.schema');
 const validatorHandler = require('../middlewares/validator.handler');
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-  const products = await ProductsService.find();
-  res.json(products);
-});
+router.get('/',
+  validatorHandler(queryProductSchema, 'query'),
+  async (req, res) => {
+    const products = await ProductsService.find(req.query);
+    res.json(products);
+  }
+);
 router.get('/:id',
   validatorHandler(getProductSchema, 'params'), //primero enviamos el middleware de validacion
   async (req, res, next) => { //luego el middleware de response

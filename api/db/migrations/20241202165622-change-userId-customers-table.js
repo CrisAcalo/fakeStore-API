@@ -18,7 +18,7 @@ module.exports = {
     await queryInterface.changeColumn(CUSTOMER_TABLE, 'userId', {
       allowNull: false,
       type: DataTypes.INTEGER,
-      unique: true,
+      unique: false,
       field: 'user_id',
     });
   }
