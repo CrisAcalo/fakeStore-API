@@ -36,7 +36,7 @@ const CustomerSchema = {
     defaultValue: Sequelize.fn('now'),
   },
   userId: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER,
     field: 'user_id',
     references: {
