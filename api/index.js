@@ -24,6 +24,8 @@ pueda hacer peticiones a nuestra API*/
 // }
 app.use(cors());
 
+require ('./utils/auth');
+
 app.get('/api', (req, res) => {
   res.send('Express Server');
 })

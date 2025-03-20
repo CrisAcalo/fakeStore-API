@@ -3,6 +3,7 @@ const express = require('express');
 const ProductsService = require('../services/product.service');
 const { createProductSchema, updateProductSchema, getProductSchema, queryProductSchema } = require('../schemas/product.schema');
 const validatorHandler = require('../middlewares/validator.handler');
+const passport = require('passport');
 
 const router = express.Router();
 
@@ -26,6 +27,7 @@ router.get('/:id',
   }
 );
 router.post('/',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(createProductSchema, 'body'),
   async (req, res, next) => {
     const body = req.body;
@@ -42,6 +44,7 @@ router.post('/',
 
   });
 router.patch('/:id',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(getProductSchema, 'params'),
   validatorHandler(updateProductSchema, 'body'),
   async (req, res, next) => {
@@ -60,6 +63,7 @@ router.patch('/:id',
     }
   });
 router.delete('/:id',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(getProductSchema, 'params'),
   async (req, res, next) => {
     try {

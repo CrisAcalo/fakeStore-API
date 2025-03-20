@@ -3,6 +3,7 @@ const express = require('express');
 const OrderService = require('../services/order.service');
 const { createOrderSchema, updateOrderSchema, getOrderSchema, addItemSchema } = require('../schemas/order.schema');
 const validatorHandler = require('../middlewares/validator.handler');
+const passport = require('passport');
 
 const router = express.Router();
 
@@ -27,6 +28,7 @@ router.get('/:id',
 );
 
 router.post('/',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(createOrderSchema, 'body'),
   async (req, res, next) => {
     const body = req.body;
@@ -40,6 +42,7 @@ router.post('/',
 );
 
 router.post('/add-item',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(addItemSchema, 'body'),
   async (req, res, next) => {
     const body = req.body;
@@ -53,6 +56,7 @@ router.post('/add-item',
 );
 
 router.patch('/:id',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(getOrderSchema, 'params'),
   validatorHandler(updateOrderSchema, 'body'),
   async (req, res, next) => {
@@ -68,6 +72,7 @@ router.patch('/:id',
 );
 
 router.delete('/:id',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(getOrderSchema, 'params'),
   async (req, res, next) => {
     const { id } = req.params;
