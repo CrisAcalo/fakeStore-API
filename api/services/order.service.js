@@ -7,10 +7,18 @@ class OrderService {
   constructor() {
     this.Order = sequelize.models.Order;
     this.OrderProduct = sequelize.models.OrderProduct;
+    this.Customer = sequelize.models.Customer;
   }
 
   async create(data) {
-    const order = await this.Order.create(data);
+    const customer = await this.Customer.findOne({
+      where: { userId: data.userId }
+    })
+    const orderData = {
+      ...data,
+      customerId: customer.id
+    }
+    const order = await this.Order.create(orderData);
     return order;
   }
 

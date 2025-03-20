@@ -8,7 +8,7 @@ const productId = Joi.number().integer().positive();
 const quantity = Joi.number().integer().positive();
 
 const createOrderSchema = Joi.object({
-  customerId: customerId.required(),
+  // customerId: customerId.required(),
   status: status.required(),
 });
 

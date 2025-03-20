@@ -6,7 +6,7 @@ const {
   updateCategorySchema,
   getCategorySchema } = require('../schemas/category.schema');
 const validatorHandler = require('../middlewares/validator.handler');
-const { checkAdminRole, checkRoles } = require('../middlewares/auth.handler');
+const { checkRoles } = require('../middlewares/auth.handler');
 const passport = require('passport');
 
 const router = express.Router();

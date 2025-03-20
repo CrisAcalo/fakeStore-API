@@ -31,17 +31,19 @@ class UserService {
 
   async findByEmail(email) {
     const user = await this.model.findOne({
-      where: {email}
+      where: { email }
     });
     if (!user) {
-      throw boom.notFound('User not found');
+      throw boom.notFound();
     } else {
       return user;
     }
   }
 
   async findOne(id) {
-    const user = await this.model.findByPk(id);
+    const user = await this.model.findByPk(id, {
+      include: ['customer']
+    });
     if (!user) {
       throw boom.notFound('User not found');
     } else {
