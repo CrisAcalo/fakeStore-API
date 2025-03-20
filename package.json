@@ -11,6 +11,10 @@
     "migrations:run": "sequelize db:migrate",
     "migrations:revert": "sequelize db:migrate:undo",
     "migrations:clean": "sequelize db:migrate:undo:all",
+    "seed:generate": "sequelize seed:generate --name",
+    "seed:run": "sequelize db:seed:all",
+    "seed:undo": "sequelize db:seed:undo",
+    "seed:clean": "sequelize db:seed:undo:all",
     "lint": "eslint"
   },
   "keywords": [],

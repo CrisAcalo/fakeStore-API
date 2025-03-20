@@ -50,10 +50,31 @@ class AuthService {
             text: "Reset your password", // plain text body
             html: `
             <b>Ingresa a este enlace para recuperar tu contraseña</b><br>
-            <a href="${link}">Click here</a>
+            <a href="${link}">${link}</a>
             `
         };
         return await this.sendEmail(mail);
+    }
+
+    async changePassword(token, password, passwordConfirmation) {
+        try {
+            const payload = jwt.verify(token, config.jwtSecret);
+            if (password !== passwordConfirmation) {
+                throw boom.badRequest('Passwords do not match');
+            }
+
+            const user = await userService.findOne(payload.sub);
+            if (user.recoveryToken !== token) {
+                throw boom.unauthorized();
+            }
+
+            const hash = await bcrypt.hash(password, 10);
+            await userService.update(user.id, { password: hash, recoveryToken: null });
+
+            return { message: 'Password changed' };
+        } catch (error) {
+            throw boom.unauthorized();
+        }
     }
 
     async sendEmail(emailToSend) {
